@@ -32,10 +32,10 @@ const MyScore: React.FC<{ notes: number[] }> = props => {
         const note = new VF.StaveNote({ clef: "treble", keys: [key], duration: "8" })
         return accidental === 0 ? note : note.addAccidental(0, new VF.Accidental("#"))
       })
-    VF.Formatter.FormatAndDraw(context, stave, notes)
 
     const beam1 = new VF.Beam(notes.slice(0, 4))
     const beam2 = new VF.Beam(notes.slice(4, 8))
+    VF.Formatter.FormatAndDraw(context, stave, notes)
     beam1.setContext(context).draw()
     beam2.setContext(context).draw()
   })
