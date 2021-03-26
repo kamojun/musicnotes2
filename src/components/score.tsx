@@ -38,7 +38,7 @@ const MyScore: React.FC<{ notes: number[] }> = props => {
     VF.Formatter.FormatAndDraw(context, stave, notes)
     beam1.setContext(context).draw()
     beam2.setContext(context).draw()
-  })
+  }, [props.notes])
   return (
     <div ref={refContainer}></div>
   )

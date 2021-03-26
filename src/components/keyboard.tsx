@@ -39,7 +39,7 @@ const Keyboard = ({ onClick }) => {
           const color = KeyColors[key]
           return <PianoKey
             key={i}
-            midi={Keys[key]}
+            midi={key}
             x={KeyPosition[key] * keyWidth}
             color={color === 0 ? 'white' : 'black'}
             width={sizes[color].width}
@@ -73,8 +73,7 @@ const PianoKey = (props) => {
 export const KeyboardContainer = () => {
   const { dispatch } = useRootContext()
   const onClick = e => {
-    // console.log(e.target)
-    dispatch({ type: "keyPress", key: e.target.dataset.midi })
+    dispatch({ type: "keyPress", key: +e.target.dataset.midi }) // datasetの中は文字列になっているので、数値に変換して渡す。
   }
   return <Keyboard onClick={onClick}></Keyboard>
 }

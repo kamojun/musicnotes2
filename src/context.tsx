@@ -1,18 +1,26 @@
 import React from 'react'
 
 
-interface IStore {
-  starttime: number,
-  pushedKeys: Keys[]
+type Store = {
+  starttime: number | null,
+  pushedKey: Keys | null,
+  position: number,
+  problem: number[]
 }
 
-const initalState: IStore = {
+const initalState: Store = {
   starttime: null,
-  pushedKeys: [],
+  pushedKey: null,
+  position: 0,
+  problem: [60, 62, 64, 65, 67, 65, 64, 62]
+}
+
+const getKey = (state: Store): Keys => {
+  return (state.problem[state.position] % 12)
 }
 
 interface StoreWithAction {
-  state: IStore;
+  state: Store;
   dispatch: React.Dispatch<UAction>;
 }
 const RootContext = React.createContext<StoreWithAction>({
@@ -40,10 +48,16 @@ type UAction = {
   key: Keys,
 }
 
-export const reducer: React.Reducer<IStore, UAction> = (state, action) => {
+export const reducer: React.Reducer<Store, UAction> = (state, action) => {
+  console.log(action)
+  console.log(getKey(state))
   switch (action.type) {
     case "keyPress": {
-      return { ...state, pushedKeys: [...state.pushedKeys, action.key] }
+      if (action.key === getKey(state)) {
+        return { ...state, position: state.position + 1 }
+      } else {
+        return state
+      }
     }
     default: {
       return state
