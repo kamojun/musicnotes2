@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import VexFlow from 'vexflow'
 const VF = VexFlow.Flow
@@ -11,8 +11,8 @@ const midi2code = (midi: number): [string, number] => {
 
 const MyScore: React.FC<{ notes: number[] }> = props => {
   const refContainer = useRef(null);
-  console.log(props.notes.slice(0, 4).map(midi2code))
   useEffect(() => {
+    console.log('use effect!')
     const renderer = new VF.Renderer(refContainer.current, VF.Renderer.Backends.SVG);
     renderer.resize(320, 120);
     const context = renderer.getContext()
@@ -38,7 +38,9 @@ const MyScore: React.FC<{ notes: number[] }> = props => {
     VF.Formatter.FormatAndDraw(context, stave, notes)
     beam1.setContext(context).draw()
     beam2.setContext(context).draw()
-  }, [props.notes])
+    return () => { refContainer.current.innerHTML = '' }  // 毎回なぜか追加されていくので、unmount時に中身を消す
+  })
+  // }, [props.notes])
   return (
     <div ref={refContainer}></div>
   )

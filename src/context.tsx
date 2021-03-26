@@ -50,11 +50,16 @@ type UAction = {
 
 export const reducer: React.Reducer<Store, UAction> = (state, action) => {
   console.log(action)
-  console.log(getKey(state))
   switch (action.type) {
     case "keyPress": {
       if (action.key === getKey(state)) {
-        return { ...state, position: state.position + 1 }
+        const newpos = state.position + 1
+        if (newpos < 8) {
+          return { ...state, position: state.position + 1 }
+        } else {
+          return { ...state, position: 0, problem: state.problem.reverse() }
+        }
+
       } else {
         return state
       }
