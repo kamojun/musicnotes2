@@ -1,10 +1,18 @@
 import React from 'react'
-import { ProgressPlugin } from 'webpack'
+import { Keys, reducer, useRootContext } from '../context'
+import styled from 'styled-components'
 
+const Rect = styled.rect`
+  &:hover {
+    fill: red;
+    opacity: 0.5;
+  }
+`
 
 type KeyColor = 0 | 1
 const KeyColors: KeyColor[] = [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]
 const KeyPosition: number[] = [0, 0.6, 1, 1.6, 2, 3, 3.6, 4, 4.6, 5, 5.6, 6]
+const DrawingOrder = [0, 2, 4, 5, 7, 9, 11, 1, 3, 6, 8, 10]
 
 // クリックされた時に何をするかは知らないキーボード
 const Keyboard = ({ onClick }) => {
@@ -24,17 +32,21 @@ const Keyboard = ({ onClick }) => {
     width: keyWidth * 7 * scale,
     height: keyHeight * scale,
   }
-  return <div style={{ display: "inline-block", width: "100%" }}>
+  return <div style={{ display: "inline-block", width: "100%", margin: 30 }}>
     <svg {...keysize}>
-      <g onClick={onClick} transform={`scale(${scale}, ${scale})`}>
-        {KeyColors.map((c, i) => <PianoKey
-          key={i}
-          color={c === 0 ? 'white' : 'black'}
-          midi={i}
-          width={sizes[c].width}
-          height={sizes[c].height}
-          x={KeyPosition[i] * keyWidth}
-        ></PianoKey>)}
+      <g transform={`scale(${scale}, ${scale})`}>
+        {DrawingOrder.map((key, i) => {
+          const color = KeyColors[key]
+          return <PianoKey
+            key={i}
+            midi={Keys[key]}
+            x={KeyPosition[key] * keyWidth}
+            color={color === 0 ? 'white' : 'black'}
+            width={sizes[color].width}
+            height={sizes[color].height}
+            onClick={onClick}
+          ></PianoKey>
+        })}
       </g>
     </svg>
   </div>
@@ -49,12 +61,17 @@ const PianoKey = (props) => {
       {...others}
       y="0" fill='white'
     />}
-    <rect
+    <Rect
       {...others}
       className="pianokey"
       data-midi={midi}
-      y="0" fill={color === "white" ? "none" : "black"} stroke="black" strokeWidth="1"
+      y="0" fill={color} stroke="black" strokeWidth="1"
     />
   </g>
 }
-export { Keyboard }
+
+export const KeyboardContainer = () => {
+  const { dispatch } = useRootContext()
+  const onClick = e => dispatch({ type: "keyPress", key: e.target.dataset.midi })
+  return <Keyboard onClick={onClick}></Keyboard>
+}

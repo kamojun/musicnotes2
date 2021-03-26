@@ -14,7 +14,7 @@ const MyScore: React.FC<{ notes: number[] }> = props => {
   console.log(props.notes.slice(0, 4).map(midi2code))
   useEffect(() => {
     const renderer = new VF.Renderer(refContainer.current, VF.Renderer.Backends.SVG);
-    renderer.resize(320, 200);
+    renderer.resize(320, 120);
     const context = renderer.getContext()
     context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
