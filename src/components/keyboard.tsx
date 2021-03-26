@@ -72,6 +72,9 @@ const PianoKey = (props) => {
 
 export const KeyboardContainer = () => {
   const { dispatch } = useRootContext()
-  const onClick = e => dispatch({ type: "keyPress", key: e.target.dataset.midi })
+  const onClick = e => {
+    // console.log(e.target)
+    dispatch({ type: "keyPress", key: e.target.dataset.midi })
+  }
   return <Keyboard onClick={onClick}></Keyboard>
 }

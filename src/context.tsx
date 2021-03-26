@@ -3,12 +3,12 @@ import React from 'react'
 
 interface IStore {
   starttime: number,
-  pushedKey?: Keys
+  pushedKeys: Keys[]
 }
 
 const initalState: IStore = {
   starttime: null,
-  pushedKey: null,
+  pushedKeys: [],
 }
 
 interface StoreWithAction {
@@ -41,14 +41,12 @@ type UAction = {
 }
 
 export const reducer: React.Reducer<IStore, UAction> = (state, action) => {
-  console.log(action)
   switch (action.type) {
     case "keyPress": {
-      console.log(action.key)
-      return { pushedKey: action.key, ...state }
+      return { ...state, pushedKeys: [...state.pushedKeys, action.key] }
     }
     default: {
-      throw Error()
+      return state
     }
   }
 }
