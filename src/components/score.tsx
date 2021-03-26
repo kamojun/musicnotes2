@@ -14,12 +14,12 @@ const MyScore: React.FC<{ notes: number[] }> = props => {
   useEffect(() => {
     console.log('use effect!')
     const renderer = new VF.Renderer(refContainer.current, VF.Renderer.Backends.SVG);
-    renderer.resize(320, 120);
+    renderer.resize(320, 100);
     const context = renderer.getContext()
     context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
     // Create a stave of width 400 at position 10, 40 on the canvas.
-    const stave = new VF.Stave(10, 10, 300);
+    const stave = new VF.Stave(10, 0, 300);
     // Add a clef and time signature.
     stave
       .addClef("treble")
@@ -40,7 +40,6 @@ const MyScore: React.FC<{ notes: number[] }> = props => {
     beam2.setContext(context).draw()
     return () => { refContainer.current.innerHTML = '' }  // 毎回なぜか追加されていくので、unmount時に中身を消す
   })
-  // }, [props.notes])
   return (
     <div ref={refContainer}></div>
   )
