@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx webpack-cli serve --mode development --content-base ./public"
+    "start": "npx webpack-cli serve --mode development --content-base ./public",
+    "deploy": "npx webpack build && cp -R build docs"
   },
   "author": "",
   "license": "ISC",
