@@ -9,10 +9,21 @@ const midi2code = (midi: number): [string, number] => {
   return [`${"ccddeffggaab"[c]}/${d - 1}`, [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0][c]]
 }
 
-const MyScore: React.FC<{ notes: number[] }> = props => {
+// もうちょっと綺麗にできそう
+const getCode = (key: string, base: number) => (sound: number) => {
+  if (key === "C") {
+    const basePosition = base % 7
+    const keys = "cdefgabcdefga".slice(basePosition, basePosition + 7)
+    const octave = ((base + sound) / 7 | 0) + 4
+    return [`${keys[sound]}/${octave}`, 0]
+  } else {
+    throw Error('key other than C is unimplemented')
+  }
+}
+
+const MyScore: React.FC<{ _key: string, base: number, notes: number[] }> = props => {
   const refContainer = useRef(null);
   useEffect(() => {
-    console.log('use effect!')
     const renderer = new VF.Renderer(refContainer.current, VF.Renderer.Backends.SVG);
     renderer.resize(320, 100);
     const context = renderer.getContext()
@@ -27,7 +38,7 @@ const MyScore: React.FC<{ notes: number[] }> = props => {
       .setContext(context).draw()
 
     const notes = props.notes
-      .map(midi2code)
+      .map(getCode(props._key, props.base))
       .map(([key, accidental]) => {
         const note = new VF.StaveNote({ clef: "treble", keys: [key], duration: "8" })
         return accidental === 0 ? note : note.addAccidental(0, new VF.Accidental("#"))
