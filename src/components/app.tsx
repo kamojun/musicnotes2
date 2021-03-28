@@ -15,7 +15,7 @@ const problems = [
   [5, 4, 5, 2, 0, 1, 2, 3],
 ]
 
-const baseRange = { min: -10, max: 7 }
+const baseRange = { min: -10, max: 10 }
 
 // baseは、C4~B4までをキーに応じてゼロとし、音階上の音数で数える
 const getMidi = (key: string, base: number, sound: number): number => {
@@ -33,7 +33,6 @@ const App = () => {
   const [time, setTime] = useState(0)
   const [notes, setNotes] = useState(problems[getRandomInt(0, problems.length)])
   const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
-  // const [base, setBase] = useState(-2)
   const [position, setPosition] = useState(0)
   const onClick = e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
