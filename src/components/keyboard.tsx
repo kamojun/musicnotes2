@@ -15,15 +15,15 @@ const DrawingOrder = [0, 2, 4, 5, 7, 9, 11, 1, 3, 6, 8, 10]
 
 // クリックされた時に何をするかは知らないキーボード
 export const Keyboard = ({ onClick }) => {
-  const keyWidth = 12
+  const keyWidth = 13.5
   const keyHeight = 40
   const sizes = [
     {
-      width: 12,
-      height: 40,
+      width: keyWidth,
+      height: keyHeight,
     }, {
-      width: 8,
-      height: 26,
+      width: 9,
+      height: 24,
     },
   ]
   const scale = 3
@@ -31,7 +31,7 @@ export const Keyboard = ({ onClick }) => {
     width: keyWidth * 7 * scale,
     height: keyHeight * scale,
   }
-  return <div style={{ display: "inline-block", width: "100%", margin: 30 }}>
+  return <div>
     <svg {...keysize}>
       <g transform={`scale(${scale}, ${scale})`}>
         {DrawingOrder.map((key, i) => {
