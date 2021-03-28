@@ -3,12 +3,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import VexFlow from 'vexflow'
 const VF = VexFlow.Flow
 
-const midi2code = (midi: number): [string, number] => {
-  const c = midi % 12
-  const d = midi / 12 | 0
-  return [`${"ccddeffggaab"[c]}/${d - 1}`, [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0][c]]
-}
-
 // もうちょっと綺麗にできそう
 const getCode = (key: string, base: number) => (sound: number) => {
   if (key === "C") {
@@ -34,7 +28,7 @@ const MyScore: React.FC<{ _key: string, base: number, notes: number[] }> = props
     // Add a clef and time signature.
     stave
       .addClef("treble")
-      .addTimeSignature("4/4")
+      .addTimeSignature("2/2")
       .setContext(context).draw()
 
     const notes = props.notes
@@ -43,12 +37,13 @@ const MyScore: React.FC<{ _key: string, base: number, notes: number[] }> = props
         const note = new VF.StaveNote({ clef: "treble", keys: [key], duration: "8" })
         return accidental === 0 ? note : note.addAccidental(0, new VF.Accidental("#"))
       })
-
-    const beam1 = new VF.Beam(notes.slice(0, 4))
-    const beam2 = new VF.Beam(notes.slice(4, 8))
+    const beams = VF.Beam.generateBeams(notes, {
+      groups: [new VF.Fraction(4, 8), new VF.Fraction(4, 8)]
+    })
     VF.Formatter.FormatAndDraw(context, stave, notes)
-    beam1.setContext(context).draw()
-    beam2.setContext(context).draw()
+    for (const beam of beams) {
+      beam.setContext(context).draw()
+    }
     return () => { refContainer.current.innerHTML = '' }  // 毎回なぜか追加されていくので、unmount時に中身を消す
   })
   return (

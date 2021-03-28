@@ -32,14 +32,14 @@ function getRandomInt(min, max) {
 const App = () => {
   const [time, setTime] = useState(0)
   const [notes, setNotes] = useState(problems[getRandomInt(0, problems.length)])
-  const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
+  // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
+  const [base, setBase] = useState(11)
   const [position, setPosition] = useState(0)
   const onClick = e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
       if (position + 1 === notes.length) {
         setPosition(0)
         setNotes(problems[getRandomInt(0, problems.length)])
-        // setBase(10)
         setBase(getRandomInt(baseRange.min, baseRange.max))
       } else {
         setPosition(position + 1)
