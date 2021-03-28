@@ -1,5 +1,4 @@
 import React from 'react'
-import { Keys, reducer, useRootContext } from '../context'
 import styled from 'styled-components'
 
 const Rect = styled.rect`
@@ -15,7 +14,7 @@ const KeyPosition: number[] = [0, 0.6, 1, 1.6, 2, 3, 3.6, 4, 4.6, 5, 5.6, 6]
 const DrawingOrder = [0, 2, 4, 5, 7, 9, 11, 1, 3, 6, 8, 10]
 
 // クリックされた時に何をするかは知らないキーボード
-const Keyboard = ({ onClick }) => {
+export const Keyboard = ({ onClick }) => {
   const keyWidth = 12
   const keyHeight = 40
   const sizes = [
@@ -68,12 +67,4 @@ const PianoKey = (props) => {
       y="0" fill={color} stroke="black" strokeWidth="1"
     />
   </g>
-}
-
-export const KeyboardContainer = () => {
-  const { dispatch } = useRootContext()
-  const onClick = e => {
-    dispatch({ type: "keyPress", key: +e.target.dataset.midi }) // datasetの中は文字列になっているので、数値に変換して渡す。
-  }
-  return <Keyboard onClick={onClick}></Keyboard>
 }
