@@ -37,6 +37,16 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
+const audios = {
+  sound0: new Audio(dosound),
+  sound2: new Audio(resound),
+  sound4: new Audio(misound),
+  sound5: new Audio(fasound),
+  sound7: new Audio(sosound),
+  sound9: new Audio(rasound),
+  sound11: new Audio(sisound),
+}
+
 
 const App = () => {
   const [time, setTime] = useState(0)
@@ -45,20 +55,11 @@ const App = () => {
   // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
   const [base, setBase] = useState(0)
   const [position, setPosition] = useState(0)
-  const audios = {
-    sound0: new Audio(dosound),
-    sound2: new Audio(resound),
-    sound4: new Audio(misound),
-    sound5: new Audio(fasound),
-    sound7: new Audio(sosound),
-    sound9: new Audio(rasound),
-    sound11: new Audio(sisound),
-  }
   const onClick = e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
       if (soundOn) {
         const sound = audios[`sound${e.target.dataset.midi}`]
-        sound.position = 0
+        sound.currentTime = 0
         sound.play()
       }
       if (position + 1 === notes.length) {
