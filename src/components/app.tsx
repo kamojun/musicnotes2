@@ -3,8 +3,16 @@ import { MyScore } from './score'
 import { Timer } from './timer'
 import { ShowPosition } from './showPosition'
 import { Keyboard } from './keyboard'
+import dosound from '../assets/media/do.mp3'
+import resound from '../assets/media/re.mp3'
+import misound from '../assets/media/mi.mp3'
+import fasound from '../assets/media/fa.mp3'
+import sosound from '../assets/media/so.mp3'
+import rasound from '../assets/media/ra.mp3'
+import sisound from '../assets/media/si.mp3'
 
 const problems = [
+  [0, 1, 2, 3, 4, 3, 2, 1],
   [0, 2, 3, 4, 5, 4, 3, 2],  // キー上で最低音0 = baseから何番目か
   [5, 3, 2, 1, 0, 1, 2, 3],
   [0, 2, 5, 4, 3, 4, 3, 2],
@@ -29,17 +37,32 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
+
 const App = () => {
   const [time, setTime] = useState(0)
   const [notes, setNotes] = useState(problems[getRandomInt(0, problems.length)])
-  const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
+  // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
+  const [base, setBase] = useState(0)
   const [position, setPosition] = useState(0)
+  const audios = {
+    sound0: new Audio(dosound),
+    sound2: new Audio(resound),
+    sound4: new Audio(misound),
+    sound5: new Audio(fasound),
+    sound7: new Audio(sosound),
+    sound9: new Audio(rasound),
+    sound11: new Audio(sisound),
+  }
   const onClick = e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
+      const sound = audios[`sound${e.target.dataset.midi}`]
+      sound.position = 0
+      sound.play()
       if (position + 1 === notes.length) {
         setPosition(0)
         setNotes(problems[getRandomInt(0, problems.length)])
-        setBase(getRandomInt(baseRange.min, baseRange.max))
+        // setBase(getRandomInt(baseRange.min, baseRange.max))
+        setBase(0)
       } else {
         setPosition(position + 1)
       }
