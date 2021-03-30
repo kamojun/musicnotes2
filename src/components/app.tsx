@@ -40,6 +40,7 @@ function getRandomInt(min, max) {
 
 const App = () => {
   const [time, setTime] = useState(0)
+  const [soundOn, setSound] = useState(false)
   const [notes, setNotes] = useState(problems[getRandomInt(0, problems.length)])
   // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
   const [base, setBase] = useState(0)
@@ -55,9 +56,11 @@ const App = () => {
   }
   const onClick = e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
-      const sound = audios[`sound${e.target.dataset.midi}`]
-      sound.position = 0
-      sound.play()
+      if (soundOn) {
+        const sound = audios[`sound${e.target.dataset.midi}`]
+        sound.position = 0
+        sound.play()
+      }
       if (position + 1 === notes.length) {
         setPosition(0)
         setNotes(problems[getRandomInt(0, problems.length)])
@@ -71,6 +74,7 @@ const App = () => {
   return <>
     <h1>ランダムハノン</h1>
     <Timer></Timer>
+    <label><input type="checkbox" onChange={() => setSound(!soundOn)} checked={soundOn}></input>ピアノの音あり</label>
     <ShowPosition pos={position}></ShowPosition>
     <MyScore _key="C" base={base} notes={notes}></MyScore>
     <Keyboard onClick={onClick}></Keyboard>
