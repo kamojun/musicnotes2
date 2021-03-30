@@ -257,7 +257,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });\n}) : (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    o[k2] = m[k];\n}));\nvar __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {\n    Object.defineProperty(o, \"default\", { enumerable: true, value: v });\n}) : function(o, v) {\n    o[\"default\"] = v;\n});\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (k !== \"default\" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);\n    __setModuleDefault(result, mod);\n    return result;\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.App = void 0;\nconst react_1 = __importStar(__webpack_require__(/*! react */ \"./node_modules/react/index.js\"));\nconst score_1 = __webpack_require__(/*! ./score */ \"./src/components/score.tsx\");\nconst timer_1 = __webpack_require__(/*! ./timer */ \"./src/components/timer.tsx\");\nconst showPosition_1 = __webpack_require__(/*! ./showPosition */ \"./src/components/showPosition.tsx\");\nconst keyboard_1 = __webpack_require__(/*! ./keyboard */ \"./src/components/keyboard.tsx\");\nconst problems = [\n    [0, 1, 2, 3, 4, 3, 2, 1],\n    [0, 2, 3, 4, 5, 4, 3, 2],\n    [5, 3, 2, 1, 0, 1, 2, 3],\n    [0, 2, 5, 4, 3, 4, 3, 2],\n    [5, 2, 0, 1, 2, 1, 2, 3],\n    [0, 2, 5, 4, 3, 2, 3, 4],\n    [5, 2, 0, 1, 2, 3, 2, 1],\n    [0, 1, 0, 2, 5, 4, 3, 2],\n    [5, 4, 5, 2, 0, 1, 2, 3],\n];\nconst baseRange = { min: -10, max: 10 };\n// baseは、C4~B4までをキーに応じてゼロとし、音階上の音数で数える\nconst getMidi = (key, base, sound) => {\n    // キーはCのみ対応\n    return [0, 2, 4, 5, 7, 9, 11][(base + sound + 70) % 7]; // 長調だったらこの配列でok\n};\nfunction getRandomInt(min, max) {\n    min = Math.ceil(min);\n    max = Math.floor(max);\n    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive\n}\nconst App = () => {\n    const [time, setTime] = react_1.useState(0);\n    const [notes, setNotes] = react_1.useState(problems[getRandomInt(0, problems.length)]);\n    // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))\n    const [base, setBase] = react_1.useState(0);\n    const [position, setPosition] = react_1.useState(0);\n    const audios = {\n        sound0: new Audio(\"media/do.mp3\"),\n        sound2: new Audio(\"media/re.mp3\"),\n        sound4: new Audio(\"media/mi.mp3\"),\n        sound5: new Audio(\"media/fa.mp3\"),\n        sound7: new Audio(\"media/so.mp3\"),\n        sound9: new Audio(\"media/ra.mp3\"),\n        sound11: new Audio(\"media/si.mp3\"),\n    };\n    const onClick = e => {\n        if (+e.target.dataset.midi === getMidi(\"C\", base, notes[position])) {\n            const sound = audios[`sound${e.target.dataset.midi}`];\n            sound.position = 0;\n            sound.play();\n            if (position + 1 === notes.length) {\n                setPosition(0);\n                setNotes(problems[getRandomInt(0, problems.length)]);\n                // setBase(getRandomInt(baseRange.min, baseRange.max))\n                setBase(0);\n            }\n            else {\n                setPosition(position + 1);\n            }\n        }\n    };\n    return react_1.default.createElement(react_1.default.Fragment, null,\n        react_1.default.createElement(\"h1\", null, \"\\u30E9\\u30F3\\u30C0\\u30E0\\u30CF\\u30CE\\u30F3\"),\n        react_1.default.createElement(timer_1.Timer, null),\n        react_1.default.createElement(showPosition_1.ShowPosition, { pos: position }),\n        react_1.default.createElement(score_1.MyScore, { _key: \"C\", base: base, notes: notes }),\n        react_1.default.createElement(keyboard_1.Keyboard, { onClick: onClick }));\n};\nexports.App = App;\n\n\n//# sourceURL=webpack://musicnotes2/./src/components/app.tsx?");
+eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });\n}) : (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    o[k2] = m[k];\n}));\nvar __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {\n    Object.defineProperty(o, \"default\", { enumerable: true, value: v });\n}) : function(o, v) {\n    o[\"default\"] = v;\n});\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (k !== \"default\" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);\n    __setModuleDefault(result, mod);\n    return result;\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.App = void 0;\nconst react_1 = __importStar(__webpack_require__(/*! react */ \"./node_modules/react/index.js\"));\nconst score_1 = __webpack_require__(/*! ./score */ \"./src/components/score.tsx\");\nconst timer_1 = __webpack_require__(/*! ./timer */ \"./src/components/timer.tsx\");\nconst showPosition_1 = __webpack_require__(/*! ./showPosition */ \"./src/components/showPosition.tsx\");\nconst keyboard_1 = __webpack_require__(/*! ./keyboard */ \"./src/components/keyboard.tsx\");\nconst do_mp3_1 = __importDefault(__webpack_require__(/*! ../assets/media/do.mp3 */ \"./src/assets/media/do.mp3\"));\nconst re_mp3_1 = __importDefault(__webpack_require__(/*! ../assets/media/re.mp3 */ \"./src/assets/media/re.mp3\"));\nconst mi_mp3_1 = __importDefault(__webpack_require__(/*! ../assets/media/mi.mp3 */ \"./src/assets/media/mi.mp3\"));\nconst fa_mp3_1 = __importDefault(__webpack_require__(/*! ../assets/media/fa.mp3 */ \"./src/assets/media/fa.mp3\"));\nconst so_mp3_1 = __importDefault(__webpack_require__(/*! ../assets/media/so.mp3 */ \"./src/assets/media/so.mp3\"));\nconst ra_mp3_1 = __importDefault(__webpack_require__(/*! ../assets/media/ra.mp3 */ \"./src/assets/media/ra.mp3\"));\nconst si_mp3_1 = __importDefault(__webpack_require__(/*! ../assets/media/si.mp3 */ \"./src/assets/media/si.mp3\"));\nconst problems = [\n    [0, 1, 2, 3, 4, 3, 2, 1],\n    [0, 2, 3, 4, 5, 4, 3, 2],\n    [5, 3, 2, 1, 0, 1, 2, 3],\n    [0, 2, 5, 4, 3, 4, 3, 2],\n    [5, 2, 0, 1, 2, 1, 2, 3],\n    [0, 2, 5, 4, 3, 2, 3, 4],\n    [5, 2, 0, 1, 2, 3, 2, 1],\n    [0, 1, 0, 2, 5, 4, 3, 2],\n    [5, 4, 5, 2, 0, 1, 2, 3],\n];\nconst baseRange = { min: -10, max: 10 };\n// baseは、C4~B4までをキーに応じてゼロとし、音階上の音数で数える\nconst getMidi = (key, base, sound) => {\n    // キーはCのみ対応\n    return [0, 2, 4, 5, 7, 9, 11][(base + sound + 70) % 7]; // 長調だったらこの配列でok\n};\nfunction getRandomInt(min, max) {\n    min = Math.ceil(min);\n    max = Math.floor(max);\n    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive\n}\nconst App = () => {\n    const [time, setTime] = react_1.useState(0);\n    const [notes, setNotes] = react_1.useState(problems[getRandomInt(0, problems.length)]);\n    // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))\n    const [base, setBase] = react_1.useState(0);\n    const [position, setPosition] = react_1.useState(0);\n    const audios = {\n        sound0: new Audio(do_mp3_1.default),\n        sound2: new Audio(re_mp3_1.default),\n        sound4: new Audio(mi_mp3_1.default),\n        sound5: new Audio(fa_mp3_1.default),\n        sound7: new Audio(so_mp3_1.default),\n        sound9: new Audio(ra_mp3_1.default),\n        sound11: new Audio(si_mp3_1.default),\n    };\n    const onClick = e => {\n        if (+e.target.dataset.midi === getMidi(\"C\", base, notes[position])) {\n            const sound = audios[`sound${e.target.dataset.midi}`];\n            sound.position = 0;\n            sound.play();\n            if (position + 1 === notes.length) {\n                setPosition(0);\n                setNotes(problems[getRandomInt(0, problems.length)]);\n                // setBase(getRandomInt(baseRange.min, baseRange.max))\n                setBase(0);\n            }\n            else {\n                setPosition(position + 1);\n            }\n        }\n    };\n    return react_1.default.createElement(react_1.default.Fragment, null,\n        react_1.default.createElement(\"h1\", null, \"\\u30E9\\u30F3\\u30C0\\u30E0\\u30CF\\u30CE\\u30F3\"),\n        react_1.default.createElement(timer_1.Timer, null),\n        react_1.default.createElement(showPosition_1.ShowPosition, { pos: position }),\n        react_1.default.createElement(score_1.MyScore, { _key: \"C\", base: base, notes: notes }),\n        react_1.default.createElement(keyboard_1.Keyboard, { onClick: onClick }));\n};\nexports.App = App;\n\n\n//# sourceURL=webpack://musicnotes2/./src/components/app.tsx?");
 
 /***/ }),
 
@@ -1315,6 +1315,83 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Voice\": () => (/* binding */ Voice)\n/* harmony export */ });\n/* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ \"./node_modules/vexflow/src/vex.js\");\n/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ \"./node_modules/vexflow/src/element.js\");\n/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tables */ \"./node_modules/vexflow/src/tables.js\");\n/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fraction */ \"./node_modules/vexflow/src/fraction.js\");\n// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.\n//\n// ## Description\n//\n// This file implements the main Voice class. It's mainly a container\n// object to group `Tickables` for formatting.\n\n\n\n\n\n\nclass Voice extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {\n  // Modes allow the addition of ticks in three different ways:\n  //\n  // STRICT: This is the default. Ticks must fill the voice.\n  // SOFT:   Ticks can be added without restrictions.\n  // FULL:   Ticks do not need to fill the voice, but can't exceed the maximum\n  //         tick length.\n  static get Mode() {\n    return {\n      STRICT: 1,\n      SOFT: 2,\n      FULL: 3,\n    };\n  }\n\n  constructor(time, options) {\n    super();\n    this.setAttribute('type', 'Voice');\n\n    this.options = {\n      softmaxFactor: 100,\n      ...options,\n    };\n\n    // Time signature shortcut: \"4/4\", \"3/8\", etc.\n    if (typeof(time) === 'string') {\n      const match = time.match(/(\\d+)\\/(\\d+)/);\n      if (match) {\n        time = {\n          num_beats: match[1],\n          beat_value: match[2],\n          resolution: _tables__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION,\n        };\n      }\n    }\n\n    // Default time sig is 4/4\n    this.time = _vex__WEBPACK_IMPORTED_MODULE_0__.Vex.Merge({\n      num_beats: 4,\n      beat_value: 4,\n      resolution: _tables__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION,\n    }, time);\n\n    // Recalculate total ticks.\n    this.totalTicks = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(\n      this.time.num_beats * (this.time.resolution / this.time.beat_value), 1);\n\n    this.resolutionMultiplier = 1;\n\n    // Set defaults\n    this.tickables = [];\n    this.ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1);\n    this.smallestTickCount = this.totalTicks.clone();\n    this.largestTickWidth = 0;\n    this.stave = null;\n    // Do we care about strictly timed notes\n    this.mode = Voice.Mode.STRICT;\n\n    // This must belong to a VoiceGroup\n    this.voiceGroup = null;\n  }\n\n  // Get the total ticks in the voice\n  getTotalTicks() { return this.totalTicks; }\n\n  // Get the total ticks used in the voice by all the tickables\n  getTicksUsed() { return this.ticksUsed; }\n\n  // Get the largest width of all the tickables\n  getLargestTickWidth() { return this.largestTickWidth; }\n\n  // Get the tick count for the shortest tickable\n  getSmallestTickCount() { return this.smallestTickCount; }\n\n  // Get the tickables in the voice\n  getTickables() { return this.tickables; }\n\n  // Get/set the voice mode, use a value from `Voice.Mode`\n  getMode() { return this.mode; }\n  setMode(mode) { this.mode = mode; return this; }\n\n  // Get the resolution multiplier for the voice\n  getResolutionMultiplier() { return this.resolutionMultiplier; }\n\n  // Get the actual tick resolution for the voice\n  getActualResolution() { return this.resolutionMultiplier * this.time.resolution; }\n\n  // Set the voice's stave\n  setStave(stave) {\n    this.stave = stave;\n    this.boundingBox = null; // Reset bounding box so we can reformat\n    return this;\n  }\n\n  // Get the bounding box for the voice\n  getBoundingBox() {\n    let stave;\n    let boundingBox;\n    let bb;\n    let i;\n\n    if (!this.boundingBox) {\n      if (!this.stave) throw new _vex__WEBPACK_IMPORTED_MODULE_0__.Vex.RERR('NoStave', \"Can't get bounding box without stave.\");\n      stave = this.stave;\n      boundingBox = null;\n\n      for (i = 0; i < this.tickables.length; ++i) {\n        this.tickables[i].setStave(stave);\n\n        bb = this.tickables[i].getBoundingBox();\n        if (!bb) continue;\n\n        boundingBox = boundingBox ? boundingBox.mergeWith(bb) : bb;\n      }\n\n      this.boundingBox = boundingBox;\n    }\n    return this.boundingBox;\n  }\n\n  // Every tickable must be associated with a voiceGroup. This allows formatters\n  // and preformatters to associate them with the right modifierContexts.\n  getVoiceGroup() {\n    if (!this.voiceGroup) {\n      throw new _vex__WEBPACK_IMPORTED_MODULE_0__.Vex.RERR('NoVoiceGroup', 'No voice group for voice.');\n    }\n\n    return this.voiceGroup;\n  }\n\n  // Set the voice group\n  setVoiceGroup(g) { this.voiceGroup = g; return this; }\n\n  // Set the voice mode to strict or soft\n  setStrict(strict) {\n    this.mode = strict ? Voice.Mode.STRICT : Voice.Mode.SOFT;\n    return this;\n  }\n\n  // Determine if the voice is complete according to the voice mode\n  isComplete() {\n    if (this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) {\n      return this.ticksUsed.equals(this.totalTicks);\n    } else {\n      return true;\n    }\n  }\n\n  // We use softmax to layout the tickables proportional to the exponent of\n  // their duration. The softmax factor is used to determine the 'linearness' of\n  // the layout.\n  //\n  // The softmax of all the tickables in this voice should sum to 1.\n  setSoftmaxFactor(factor) {\n    this.options.softmaxFactor = factor;\n    return this;\n  }\n\n  // Calculate the sum of the exponents of all the ticks in this voice to use as the denominator\n  // of softmax.\n  reCalculateExpTicksUsed() {\n    const totalTicks = this.ticksUsed.value();\n    const exp = (tickable) => Math.pow(this.options.softmaxFactor, tickable.getTicks().value() / totalTicks);\n    this.expTicksUsed = this.tickables.map(exp).reduce((a, b) => a + b);\n    return this.expTicksUsed;\n  }\n\n  // Get the softmax-scaled value of a tick duration. 'tickValue' is a number.\n  softmax(tickValue) {\n    if (!this.expTicksUsed) {\n      this.reCalculateExpTicksUsed();\n    }\n\n    const totalTicks = this.ticksUsed.value();\n    const exp = (v) => Math.pow(this.options.softmaxFactor, v / totalTicks);\n    return exp(tickValue) / this.expTicksUsed;\n  }\n\n  // Add a tickable to the voice\n  addTickable(tickable) {\n    if (!tickable.shouldIgnoreTicks()) {\n      const ticks = tickable.getTicks();\n\n      // Update the total ticks for this line.\n      this.ticksUsed.add(ticks);\n\n      if (\n        (this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) &&\n        this.ticksUsed.greaterThan(this.totalTicks)\n      ) {\n        this.ticksUsed.subtract(ticks);\n        throw new _vex__WEBPACK_IMPORTED_MODULE_0__.Vex.RERR('BadArgument', 'Too many ticks.');\n      }\n\n      // Track the smallest tickable for formatting.\n      if (ticks.lessThan(this.smallestTickCount)) {\n        this.smallestTickCount = ticks.clone();\n      }\n\n      this.resolutionMultiplier = this.ticksUsed.denominator;\n\n      // Expand total ticks using denominator from ticks used.\n      this.totalTicks.add(0, this.ticksUsed.denominator);\n    }\n\n    // Add the tickable to the line.\n    this.tickables.push(tickable);\n    tickable.setVoice(this);\n    return this;\n  }\n\n  // Add an array of tickables to the voice.\n  addTickables(tickables) {\n    for (let i = 0; i < tickables.length; ++i) {\n      this.addTickable(tickables[i]);\n    }\n\n    return this;\n  }\n\n  // Preformats the voice by applying the voice's stave to each note.\n  preFormat() {\n    if (this.preFormatted) return this;\n\n    this.tickables.forEach((tickable) => {\n      if (!tickable.getStave()) {\n        tickable.setStave(this.stave);\n      }\n    });\n\n    this.preFormatted = true;\n    return this;\n  }\n\n  // Render the voice onto the canvas `context` and an optional `stave`.\n  // If `stave` is omitted, it is expected that the notes have staves\n  // already set.\n  draw(context = this.context, stave = this.stave) {\n    this.setRendered();\n    let boundingBox = null;\n    for (let i = 0; i < this.tickables.length; ++i) {\n      const tickable = this.tickables[i];\n\n      // Set the stave if provided\n      if (stave) tickable.setStave(stave);\n\n      if (!tickable.getStave()) {\n        throw new _vex__WEBPACK_IMPORTED_MODULE_0__.Vex.RuntimeError(\n          'MissingStave', 'The voice cannot draw tickables without staves.'\n        );\n      }\n\n      if (i === 0) boundingBox = tickable.getBoundingBox();\n\n      if (i > 0 && boundingBox) {\n        const tickable_bb = tickable.getBoundingBox();\n        if (tickable_bb) boundingBox.mergeWith(tickable_bb);\n      }\n\n      tickable.setContext(context);\n      tickable.drawWithStyle();\n    }\n\n    this.boundingBox = boundingBox;\n  }\n}\n\n\n//# sourceURL=webpack://musicnotes2/./node_modules/vexflow/src/voice.js?");
 
+/***/ }),
+
+/***/ "./src/assets/media/do.mp3":
+/*!*********************************!*\
+  !*** ./src/assets/media/do.mp3 ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+eval("module.exports = __webpack_require__.p + \"47ab974b16be11176c89.mp3\";\n\n//# sourceURL=webpack://musicnotes2/./src/assets/media/do.mp3?");
+
+/***/ }),
+
+/***/ "./src/assets/media/fa.mp3":
+/*!*********************************!*\
+  !*** ./src/assets/media/fa.mp3 ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+eval("module.exports = __webpack_require__.p + \"dc5aad3de3c969bfcfb5.mp3\";\n\n//# sourceURL=webpack://musicnotes2/./src/assets/media/fa.mp3?");
+
+/***/ }),
+
+/***/ "./src/assets/media/mi.mp3":
+/*!*********************************!*\
+  !*** ./src/assets/media/mi.mp3 ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+eval("module.exports = __webpack_require__.p + \"eec9dc50ad2dc66ffc6e.mp3\";\n\n//# sourceURL=webpack://musicnotes2/./src/assets/media/mi.mp3?");
+
+/***/ }),
+
+/***/ "./src/assets/media/ra.mp3":
+/*!*********************************!*\
+  !*** ./src/assets/media/ra.mp3 ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+eval("module.exports = __webpack_require__.p + \"5162d04710c49cec1302.mp3\";\n\n//# sourceURL=webpack://musicnotes2/./src/assets/media/ra.mp3?");
+
+/***/ }),
+
+/***/ "./src/assets/media/re.mp3":
+/*!*********************************!*\
+  !*** ./src/assets/media/re.mp3 ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+eval("module.exports = __webpack_require__.p + \"3af5af8a4482891ee9ae.mp3\";\n\n//# sourceURL=webpack://musicnotes2/./src/assets/media/re.mp3?");
+
+/***/ }),
+
+/***/ "./src/assets/media/si.mp3":
+/*!*********************************!*\
+  !*** ./src/assets/media/si.mp3 ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+eval("module.exports = __webpack_require__.p + \"4c2a4f2c1bf1fd639baa.mp3\";\n\n//# sourceURL=webpack://musicnotes2/./src/assets/media/si.mp3?");
+
+/***/ }),
+
+/***/ "./src/assets/media/so.mp3":
+/*!*********************************!*\
+  !*** ./src/assets/media/so.mp3 ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+eval("module.exports = __webpack_require__.p + \"45ab981ddff617cb46d3.mp3\";\n\n//# sourceURL=webpack://musicnotes2/./src/assets/media/so.mp3?");
+
 /***/ })
 
 /******/ 	});
@@ -1368,6 +1445,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -1382,6 +1471,26 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
 /******/ 	})();
 /******/ 	
 /************************************************************************/
