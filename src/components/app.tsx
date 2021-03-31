@@ -55,6 +55,15 @@ async function setupSample(sound: "*.mp3") {
   const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
   return audioBuffer;
 }
+const mp3s = {
+  sound0: null,
+  sound2: null,
+  sound4: null,
+  sound5: null,
+  sound7: null,
+  sound9: null,
+  sound11: null,
+}
 
 
 const App = () => {
@@ -64,11 +73,24 @@ const App = () => {
   // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
   const [base, setBase] = useState(0)
   const [position, setPosition] = useState(0)
-  const onClick = async e => {
+  useEffect(() => {
+    const f = async () => {
+      mp3s.sound0 = await setupSample(audios.sound0)
+      mp3s.sound2 = await setupSample(audios.sound2)
+      mp3s.sound4 = await setupSample(audios.sound4)
+      mp3s.sound5 = await setupSample(audios.sound5)
+      mp3s.sound7 = await setupSample(audios.sound7)
+      mp3s.sound9 = await setupSample(audios.sound9)
+      mp3s.sound11 = await setupSample(audios.sound11)
+    }
+    f()
+  }, [])
+  const onClick = e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
       if (soundOn) {
+        ctx.resume()
         const source = ctx.createBufferSource();
-        source.buffer = await setupSample(audios[`sound${e.target.dataset.midi}`])
+        source.buffer = mp3s[`sound${e.target.dataset.midi}`]
         const gainNode = ctx.createGain()
         source.connect(gainNode)
         gainNode.connect(ctx.destination);
@@ -89,7 +111,13 @@ const App = () => {
   return <>
     <h1>ランダムハノン</h1>
     <Timer></Timer>
-    <label><input type="checkbox" onChange={() => setSound(!soundOn)} checked={soundOn}></input>ピアノの音あり</label>
+    <label><input type="checkbox" onChange={() => {
+      setSound(!soundOn)
+    }} checked={soundOn} onTouchStart={() => {
+      const source = ctx.createBufferSource()
+      source.start()
+      source.stop()
+    }}></input>ピアノの音あり</label>
     <ShowPosition pos={position}></ShowPosition>
     <MyScore _key="C" base={base} notes={notes}></MyScore>
     <Keyboard onClick={onClick}></Keyboard>
