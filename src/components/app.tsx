@@ -3,13 +3,13 @@ import { MyScore } from './score'
 import { Timer } from './timer'
 import { ShowPosition } from './showPosition'
 import { Keyboard } from './keyboard'
-import dosound from '../assets/media/do.mp3'
-import resound from '../assets/media/re.mp3'
-import misound from '../assets/media/mi.mp3'
-import fasound from '../assets/media/fa.mp3'
-import sosound from '../assets/media/so.mp3'
-import rasound from '../assets/media/ra.mp3'
-import sisound from '../assets/media/si.mp3'
+import sound0 from '../assets/media/do.mp3'
+import sound2 from '../assets/media/re.mp3'
+import sound4 from '../assets/media/mi.mp3'
+import sound5 from '../assets/media/fa.mp3'
+import sound7 from '../assets/media/so.mp3'
+import sound9 from '../assets/media/ra.mp3'
+import sound11 from '../assets/media/si.mp3'
 
 const problems = [
   [0, 1, 2, 3, 4, 3, 2, 1],
@@ -38,13 +38,22 @@ function getRandomInt(min, max) {
 }
 
 const audios = {
-  sound0: new Audio(dosound),
-  sound2: new Audio(resound),
-  sound4: new Audio(misound),
-  sound5: new Audio(fasound),
-  sound7: new Audio(sosound),
-  sound9: new Audio(rasound),
-  sound11: new Audio(sisound),
+  sound0,
+  sound2,
+  sound4,
+  sound5,
+  sound7,
+  sound9,
+  sound11,
+}
+
+const ctx = new AudioContext()
+async function setupSample(sound: "*.mp3") {
+  const response = await fetch(sound);
+  const arrayBuffer = await response.arrayBuffer();
+  // Web Audio APIで使える形式に変換
+  const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+  return audioBuffer;
 }
 
 
@@ -55,12 +64,17 @@ const App = () => {
   // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
   const [base, setBase] = useState(0)
   const [position, setPosition] = useState(0)
-  const onClick = e => {
+  const onClick = async e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
       if (soundOn) {
-        const sound = audios[`sound${e.target.dataset.midi}`]
-        sound.currentTime = 0
-        sound.play()
+        const source = ctx.createBufferSource();
+        source.buffer = await setupSample(audios[`sound${e.target.dataset.midi}`])
+        const gainNode = ctx.createGain()
+        source.connect(gainNode)
+        gainNode.connect(ctx.destination);
+        gainNode.gain.setValueAtTime(0.5, ctx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5)
+        source.start()
       }
       if (position + 1 === notes.length) {
         setPosition(0)
