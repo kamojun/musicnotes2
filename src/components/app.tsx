@@ -12,7 +12,6 @@ import sound9 from '../assets/media/ra.mp3'
 import sound11 from '../assets/media/si.mp3'
 
 const problems = [
-  [0, 1, 2, 3, 4, 3, 2, 1],
   [0, 2, 3, 4, 5, 4, 3, 2],  // キー上で最低音0 = baseから何番目か
   [5, 3, 2, 1, 0, 1, 2, 3],
   [0, 2, 5, 4, 3, 4, 3, 2],
@@ -48,7 +47,7 @@ const audios = {
 }
 
 const ctx = new AudioContext()
-async function setupSample(sound: "*.mp3") {
+async function loadSound(sound: "*.mp3") {
   const response = await fetch(sound);
   const arrayBuffer = await response.arrayBuffer();
   // Web Audio APIで使える形式に変換
@@ -68,26 +67,26 @@ const mp3s = {
 
 const App = () => {
   const [time, setTime] = useState(0)
+  const [showSound, setShowSound] = useState(false)
   const [soundOn, setSound] = useState(false)
   const [notes, setNotes] = useState(problems[getRandomInt(0, problems.length)])
   // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
   const [base, setBase] = useState(0)
   const [position, setPosition] = useState(0)
   useEffect(() => {
-    const f = async () => {
-      mp3s.sound0 = await setupSample(audios.sound0)
-      mp3s.sound2 = await setupSample(audios.sound2)
-      mp3s.sound4 = await setupSample(audios.sound4)
-      mp3s.sound5 = await setupSample(audios.sound5)
-      mp3s.sound7 = await setupSample(audios.sound7)
-      mp3s.sound9 = await setupSample(audios.sound9)
-      mp3s.sound11 = await setupSample(audios.sound11)
-    }
-    f()
+    (async () => {
+      mp3s.sound0 = await loadSound(audios.sound0)
+      mp3s.sound2 = await loadSound(audios.sound2)
+      mp3s.sound4 = await loadSound(audios.sound4)
+      mp3s.sound5 = await loadSound(audios.sound5)
+      mp3s.sound7 = await loadSound(audios.sound7)
+      mp3s.sound9 = await loadSound(audios.sound9)
+      mp3s.sound11 = await loadSound(audios.sound11)
+    })().then(() => setShowSound(true))  // 音が正しくロードされた時だけ、効果音機能出現
   }, [])
   const onClick = e => {
     if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
-      if (soundOn) {
+      if (base === 0 && soundOn) {
         ctx.resume()
         const source = ctx.createBufferSource();
         source.buffer = mp3s[`sound${e.target.dataset.midi}`]
@@ -101,8 +100,7 @@ const App = () => {
       if (position + 1 === notes.length) {
         setPosition(0)
         setNotes(problems[getRandomInt(0, problems.length)])
-        // setBase(getRandomInt(baseRange.min, baseRange.max))
-        setBase(0)
+        setBase(getRandomInt(baseRange.min, baseRange.max))
       } else {
         setPosition(position + 1)
       }
@@ -111,13 +109,9 @@ const App = () => {
   return <>
     <h1>ランダムハノン</h1>
     <Timer></Timer>
-    <label><input type="checkbox" onChange={() => {
+    {showSound && <label><input type="checkbox" onChange={() => {
       setSound(!soundOn)
-    }} checked={soundOn} onTouchStart={() => {
-      const source = ctx.createBufferSource()
-      source.start()
-      source.stop()
-    }}></input>ピアノの音あり</label>
+    }} checked={soundOn}></input>ピアノの音あり</label>}
     <ShowPosition pos={position}></ShowPosition>
     <MyScore _key="C" base={base} notes={notes}></MyScore>
     <Keyboard onClick={onClick}></Keyboard>
