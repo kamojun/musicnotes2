@@ -29,9 +29,11 @@ const MyScore: React.FC<{ _key: string, base: number, notes: number[] }> = props
     // Add a clef and time signature.
     stave
       .addClef(clef)
-      .addTimeSignature("2/2")
+      .addTimeSignature("4/4")
       .setContext(context).draw()
-
+    if (props.notes.length === 0) {
+      return
+    }
     const notes = props.notes
       .map(getCode(props._key, props.base))
       .map(([key, accidental]) => {

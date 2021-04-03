@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-const Timer = () => {
-  return <h3>timer unimplemented</h3>
+const Timer: React.FC<{}> = (props) => {
+  return <h3>{props.children}</h3>
 }
 
 export { Timer }

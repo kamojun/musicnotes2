@@ -36,16 +36,6 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
-const audios = {
-  sound0,
-  sound2,
-  sound4,
-  sound5,
-  sound7,
-  sound9,
-  sound11,
-}
-
 const ctx = new AudioContext()
 async function loadSound(sound: "*.mp3") {
   const response = await fetch(sound);
@@ -64,29 +54,31 @@ const mp3s = {
   sound11: null,
 }
 
+const defaultState = {
+  timerOn: false,
+  soundOn: false,
+  showSound: false,
+  notes: problems[0],
+  base: 0,
+  position: 0,
+}
 
 const App = () => {
-  const [time, setTime] = useState(0)
-  const [showSound, setShowSound] = useState(false)
-  const [soundOn, setSound] = useState(false)
-  const [notes, setNotes] = useState(problems[getRandomInt(0, problems.length)])
-  // const [base, setBase] = useState(getRandomInt(baseRange.min, baseRange.max))
-  const [base, setBase] = useState(0)
-  const [position, setPosition] = useState(0)
+  const [state, setState] = useState(defaultState)
   useEffect(() => {
     (async () => {
-      mp3s.sound0 = await loadSound(audios.sound0)
-      mp3s.sound2 = await loadSound(audios.sound2)
-      mp3s.sound4 = await loadSound(audios.sound4)
-      mp3s.sound5 = await loadSound(audios.sound5)
-      mp3s.sound7 = await loadSound(audios.sound7)
-      mp3s.sound9 = await loadSound(audios.sound9)
-      mp3s.sound11 = await loadSound(audios.sound11)
-    })().then(() => setShowSound(true))  // 音が正しくロードされた時だけ、効果音機能出現
+      mp3s.sound0 = await loadSound(sound0)
+      mp3s.sound2 = await loadSound(sound2)
+      mp3s.sound4 = await loadSound(sound4)
+      mp3s.sound5 = await loadSound(sound5)
+      mp3s.sound7 = await loadSound(sound7)
+      mp3s.sound9 = await loadSound(sound9)
+      mp3s.sound11 = await loadSound(sound11)
+    })().then(() => setState({ ...state, showSound: true }))  // 音が正しくロードされた時だけ、効果音機能出現
   }, [])
   const onClick = e => {
-    if (+e.target.dataset.midi === getMidi("C", base, notes[position])) {
-      if (base === 0 && soundOn) {
+    if (+e.target.dataset.midi === getMidi("C", state.base, state.notes[state.position])) {
+      if (state.base === 0 && state.soundOn) {
         ctx.resume()
         const source = ctx.createBufferSource();
         source.buffer = mp3s[`sound${e.target.dataset.midi}`]
@@ -97,23 +89,29 @@ const App = () => {
         gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5)
         source.start()
       }
-      if (position + 1 === notes.length) {
-        setPosition(0)
-        setNotes(problems[getRandomInt(0, problems.length)])
-        setBase(getRandomInt(baseRange.min, baseRange.max))
+      if (state.position + 1 === state.notes.length) {
+        setState({
+          ...state,
+          position: 0,
+          notes: problems[getRandomInt(0, problems.length)],
+          base: getRandomInt(baseRange.min, baseRange.max)
+        })
       } else {
-        setPosition(position + 1)
+        setState({
+          ...state,
+          position: state.position + 1
+        })
       }
     }
   }
   return <>
     <h1>ランダムハノン</h1>
-    <Timer></Timer>
-    {showSound && <label><input type="checkbox" onChange={() => {
-      setSound(!soundOn)
-    }} checked={soundOn}></input>ピアノの音あり</label>}
-    <ShowPosition pos={position}></ShowPosition>
-    <MyScore _key="C" base={base} notes={notes}></MyScore>
+    <Timer>鍵盤をタップしてスタート</Timer>
+    {state.showSound && <label><input type="checkbox" onChange={() => {
+      setState({ ...state, soundOn: !state.soundOn })
+    }} checked={state.soundOn}></input>ピアノの音あり</label>}
+    <ShowPosition pos={state.position}></ShowPosition>
+    <MyScore _key="C" base={state.base} notes={state.notes}></MyScore>
     <Keyboard onClick={onClick}></Keyboard>
   </>
 }
