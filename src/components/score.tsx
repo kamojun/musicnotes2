@@ -15,7 +15,7 @@ const getCode = (key: string, base: number) => (sound: number) => {
   }
 }
 
-const MyScore: React.FC<{ _key: string, base: number, notes: number[] }> = props => {
+const MyScore: React.FC<{ _key: string, base: number, notes: number[], onClick: (e: any) => void }> = props => {
   const refContainer = useRef(null);
   const clef = ((props.base + 2 + 28) / 7 | 0) < 4 ? "bass" : "treble"  // 一番下がA3くらいまでト音記号
   useEffect(() => {
@@ -31,26 +31,25 @@ const MyScore: React.FC<{ _key: string, base: number, notes: number[] }> = props
       .addClef(clef)
       .addTimeSignature("4/4")
       .setContext(context).draw()
-    if (props.notes.length === 0) {
-      return
-    }
-    const notes = props.notes
-      .map(getCode(props._key, props.base))
-      .map(([key, accidental]) => {
-        const note = new VF.StaveNote({ clef, keys: [key], duration: "8" })
-        return accidental === 0 ? note : note.addAccidental(0, new VF.Accidental("#"))
+    if (props.notes.length > 0) {
+      const notes = props.notes
+        .map(getCode(props._key, props.base))
+        .map(([key, accidental]) => {
+          const note = new VF.StaveNote({ clef, keys: [key], duration: "8" })
+          return accidental === 0 ? note : note.addAccidental(0, new VF.Accidental("#"))
+        })
+      const beams = VF.Beam.generateBeams(notes, {
+        groups: [new VF.Fraction(4, 8), new VF.Fraction(4, 8)]
       })
-    const beams = VF.Beam.generateBeams(notes, {
-      groups: [new VF.Fraction(4, 8), new VF.Fraction(4, 8)]
-    })
-    VF.Formatter.FormatAndDraw(context, stave, notes)
-    for (const beam of beams) {
-      beam.setContext(context).draw()
+      VF.Formatter.FormatAndDraw(context, stave, notes)
+      for (const beam of beams) {
+        beam.setContext(context).draw()
+      }
     }
     return () => { refContainer.current.innerHTML = '' }  // 毎回なぜか追加されていくので、unmount時に中身を消す
   })
   return (
-    <div ref={refContainer}></div>
+    <div onClick={props.onClick} ref={refContainer}></div>
   )
 }
 
